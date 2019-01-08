@@ -33,7 +33,7 @@ export class DataproviderService {
     this.timer
     .takeWhile(() => this.alive)
     .subscribe(() => {
-      this.http.get(this.backendAddress + 'datasets')
+      this.http.get(this.backendAddress + 'data/list.json')
         .subscribe((data) => {
             const response = data['_body'] || '';
             const newData = JSON.parse(response);
@@ -44,6 +44,12 @@ export class DataproviderService {
             this.setDataSets(this.dataSets);
           });
     });
+
+    if (environment.fixedDataSets) {
+        const selectedDataSetId = 0; // fixme from parameter
+        const selectedDataSet = environment.fixedDataSets[selectedDataSetId];
+        this.downloadDataSet(selectedDataSet.name, selectedDataSet.version, selectedDataSet.position);
+    }
   }
 
   private jsonEqual(a, b) {
@@ -52,23 +58,23 @@ export class DataproviderService {
 
   public downloadDataSet(name: string, version: string, position: string) {
     this.http
-      .get(this.backendAddress + 'datasets/' + name + '/' + version + '/schema')
+      .get(this.backendAddress + 'data/' + name + '/' + name + '.' + version + '.schema.json')
       .subscribe((schemaData) => {
         const schemaResponse = schemaData['_body'] || '';
         this.deliverSchema = JSON.parse(schemaResponse);
         this.http
-          .get(this.backendAddress + 'datasets/' + name + '/' + version + '/feature')
+          .get(this.backendAddress + 'data/' + name + '/' + name + '.' + version + '.feature.json')
           .subscribe((featureData) => {
             const featureResponse = featureData['_body'] || '';
             this.deliverFeature = JSON.parse(featureResponse);
             this.http
-              .get(this.backendAddress + 'datasets/' + name + '/' + version + '/position/' + position)
+              .get(this.backendAddress + 'data/' + name + '/' + name + '.' + version + '.position.' + position + '.json')
               .subscribe((positionData) => {
                 const positionResponse = positionData['_body'] || '';
                 this.deliverPosition = JSON.parse(positionResponse);
                 // if meta is available
                 this.http
-                  .get(this.backendAddress + 'datasets/' + name + '/' + version + '/meta')
+                  .get(this.backendAddress + 'data/' + name + '/' + name + '.' + version + '.meta.json')
                   .subscribe((metaData) => {
                     const metaResponse = metaData['_body'] || '';
                     this.deliverMeta = JSON.parse(metaResponse);

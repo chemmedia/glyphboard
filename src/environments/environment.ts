@@ -5,5 +5,13 @@
 
 export const environment = {
   production: false,
-  backendAddress: 'http://localhost:4201/'
+  backendAddress: 'assets/',
+  fixedDataSets : [
+      {
+          descr: 'febrl',
+          name: 'febrl',
+          version: '22032018',
+          position: 'tsne'
+      }
+  ]
 };
