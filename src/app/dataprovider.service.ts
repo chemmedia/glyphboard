@@ -44,12 +44,6 @@ export class DataproviderService {
             this.setDataSets(this.dataSets);
           });
     });
-
-    if (environment.fixedDataSets) {
-        const selectedDataSetId = 0; // fixme from parameter
-        const selectedDataSet = environment.fixedDataSets[selectedDataSetId];
-        this.downloadDataSet(selectedDataSet.name, selectedDataSet.version, selectedDataSet.position);
-    }
   }
 
   private jsonEqual(a, b) {

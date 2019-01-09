@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { DashboardTabComponent } from '../dashboard-tab/dashboard-tab.component';
 import { ConfigurationData } from '../../glyphplot/configuration.data';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard-tab-data',
@@ -31,6 +32,24 @@ export class DashboardTabDataComponent extends DashboardTabComponent implements 
 
   constructor(injector: Injector) {
     super(injector);
+
+    if (environment.fixedDataSets) {
+        const selectedDataSetId = 0; // fixme from parameter
+        const selectedDataSet = environment.fixedDataSets[selectedDataSetId];
+
+        this.versions.push(selectedDataSet.version);
+        this.positionAlgorithms.push(selectedDataSet.position);
+
+        this.selectedVersion = selectedDataSet.version;
+        this.selectedDataset = selectedDataSet.name;
+        this.selectedPositionAlgorithm = selectedDataSet.position;
+
+        this.configuration.configurations[0].globalFeatureContext = 1;
+        this.configuration.configurations[1].globalFeatureContext = 1;
+
+        this.updateDataSetInfo(false);
+        this.updateData(0);
+    }
   }
 
   ngOnInit() {

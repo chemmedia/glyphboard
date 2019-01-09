@@ -9,7 +9,6 @@
           ],
           "meta": null,
           "position": [
-            "pca",
             "tsne"
           ],
           "schema": [
