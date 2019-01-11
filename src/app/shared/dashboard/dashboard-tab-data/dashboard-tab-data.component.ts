@@ -34,15 +34,17 @@ export class DashboardTabDataComponent extends DashboardTabComponent implements 
     super(injector);
 
     if (environment.fixedDataSets) {
-        const selectedDataSetId = 0; // fixme from parameter
-        const selectedDataSet = environment.fixedDataSets[selectedDataSetId];
+        let glyphboardDataset = window["glyphboardDataset"];
+        if(typeof glyphboardDataset !== 'undefined'){
+            const selectedDataSet = environment.fixedDataSets[glyphboardDataset];
 
-        this.versions.push(selectedDataSet.version);
-        this.positionAlgorithms.push(selectedDataSet.position);
+            this.versions.push(selectedDataSet.version);
+            this.positionAlgorithms.push(selectedDataSet.position);
 
-        this.selectedVersion = selectedDataSet.version;
-        this.selectedDataset = selectedDataSet.name;
-        this.selectedPositionAlgorithm = selectedDataSet.position;
+            this.selectedVersion = selectedDataSet.version;
+            this.selectedDataset = selectedDataSet.name;
+            this.selectedPositionAlgorithm = selectedDataSet.position;
+        }
 
         this.configuration.configurations[0].globalFeatureContext = 1;
         this.configuration.configurations[1].globalFeatureContext = 1;
